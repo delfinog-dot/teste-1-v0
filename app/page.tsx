@@ -1,4 +1,3 @@
- import { LayoutDashboard } from "lucide-react"
 import { ChatProvider } from "@/components/chat/chat-provider"
 import { ExpeditionTable } from "@/components/dashboard/expedition-table"
 import { InventoryProvider } from "@/components/dashboard/inventory-provider"
@@ -13,8 +12,7 @@ export default function Page() {
         <header className="border-b border-border bg-card">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <img src="/public/EXPEDITA.png"/>
-              {<LayoutDashboard className="size-5"/>}
+              <img src="/public/gemini-sv.png"/>
             </div>
             <div>
               <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
