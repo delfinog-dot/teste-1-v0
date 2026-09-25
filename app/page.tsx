@@ -11,7 +11,7 @@ export default function Page() {
       <div className="min-h-screen bg-muted/30">
         <header className="border-b border-border bg-card">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
-            <div className="flex size-10 items-center justify-center>
+            <div className="logo">
               <img src="/public/gemini-svg.png">
               </div>
               <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
