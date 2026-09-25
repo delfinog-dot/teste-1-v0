@@ -14,7 +14,8 @@ export default function Page() {
     <div className="logo">
   <img src="/gemini-svg.png" alt="Logo Expedita" />
 </div>
-    <h1 className="text-lg font-semibold leading-tight">Expedita</h1><br>
+    <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
+    <br>
     <p className="text-sm text-muted-foreground">Painel do supervisor</p>
   </div>
 </header>
