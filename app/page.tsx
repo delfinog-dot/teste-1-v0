@@ -11,14 +11,22 @@ export default function Page() {
       <div className="min-h-screen bg-muted/30">
   <header className="border-b border-border bg-card">
     <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
-      <div className="logo relative flex items-center justify-center">
+      
+      {/* Container da Logo */}
+      <div className="logo">
         <img src="/gemini-svg.png" alt="Logo Expedita" />
       </div>
-      <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
-      <p className="text-sm text-muted-foreground">Painel do supervisor</p>
+
+      {/* Agrupamento dos textos em coluna */}
+      <div className="flex flex-col leading-none">
+        <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
+        <p className="text-xs text-muted-foreground">Painel do supervisor</p>
+      </div>
+
     </div>
   </header>
 </div>
+
         <main className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
           <MetricCards />
           <ExpeditionTable />

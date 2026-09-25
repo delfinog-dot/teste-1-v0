@@ -82,19 +82,17 @@
 }
 
 .logo {
-  position: relative;
-  width: 32px;  /* Mantém a área de layout da barra intacta */
-  height: 32px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Impede a div da logo de encolher */
 }
 
 .logo img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Centraliza perfeitamente no eixo da barra */
-  width: 60px;  /* Ajuste a largura da logo aqui sem alterar a barra */
-  height: 60px; /* Ajuste a altura da logo aqui sem alterar a barra */
-  max-width: none !important;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
