@@ -13,6 +13,7 @@ export default function Page() {
         <header className="border-b border-border bg-card">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <img src="/public/EXPEDITA.png" alt="Logo" className="h-6 w-6" />
               {/* <LayoutDashboard className="size-5" /> */}
             </div>
             <div>
