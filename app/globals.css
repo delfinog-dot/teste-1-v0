@@ -82,20 +82,23 @@
 }
 
 .logo {
-  width: 32px;
-  height: 32px;
+  position: relative;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .logo img {
-  width: 120px;
-  height: 120px;
+  position: absolute;
+  /* Largura e altura maiores que vazam o container sem alterar a altura do header */
+  width: 75px;
+  height: 75px;
+  max-width: none !important; /* Desativa limitações do Tailwind */
   object-fit: contain;
-  /* Aumenta o tamanho visual da imagem em 2x sem alterar o tamanho da div pai */
-  transform: scale(2.2); 
 }
+
 .dark {
   color-scheme: dark;
   --background: oklch(0.145 0 0);
