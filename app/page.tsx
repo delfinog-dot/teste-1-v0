@@ -12,10 +12,10 @@ export default function Page() {
         <header className="border-b border-border bg-card">
           <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
             <div className="logo">
-              <img src="/public/gemini-svg.png">
-              <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
-              <p className="text-sm text-muted-foreground">Painel do supervisor</p>
+              <img src="/gemini-svg.png">
             </div>
+            <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
+            <p className="text-sm text-muted-foreground">Painel do supervisor</p>
           </div>
         </header>
 
