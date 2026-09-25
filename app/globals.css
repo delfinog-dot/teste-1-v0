@@ -83,19 +83,18 @@
 
 .logo {
   position: relative;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: left;
-  justify-content: center;
+  width: 32px;  /* Mantém a área de layout da barra intacta */
+  height: 32px;
 }
 
 .logo img {
   position: absolute;
-  /* Largura e altura maiores que vazam o container sem alterar a altura do header */
-  width: 120px;
-  height: 120px;
-  max-width: none !important; /* Desativa limitações do Tailwind */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centraliza perfeitamente no eixo da barra */
+  width: 60px;  /* Ajuste a largura da logo aqui sem alterar a barra */
+  height: 60px; /* Ajuste a altura da logo aqui sem alterar a barra */
+  max-width: none !important;
   object-fit: contain;
 }
 
