@@ -90,8 +90,8 @@
 }
 
 .logo img {
-  width: 70px;
-  height: 70px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
   /* Aumenta o tamanho visual da imagem em 2x sem alterar o tamanho da div pai */
   transform: scale(2.2); 
