@@ -87,12 +87,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Impede a div da logo de encolher */
 }
 
 .logo img {
-  width: 600px;
-  height: 600px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
 }
 
