@@ -16,7 +16,7 @@ export default function Page() {
               {/* <LayoutDashboard className="size-5" /> */}
             </div>
             <div>
-              <h1 className="text-lg font-semibold leading-tight">Estoque &amp; Logística</h1>
+              <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
               <p className="text-sm text-muted-foreground">Painel do supervisor</p>
             </div>
           </div>
