@@ -8,31 +8,30 @@ export default function Page() {
   return (
     <InventoryProvider>
       <ChatProvider>
-      <div className="min-h-screen bg-muted/30">
-  <header className="border-b border-border bg-card">
-    <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
-      
-      {/* Container da Logo */}
-      <div className="logo">
-        <img src="/gemini-svg.png" alt="Logo Expedita" />
-      </div>
+        <div className="min-h-screen bg-muted/30">
+          <header className="border-b border-border bg-card">
+            <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 sm:px-6 lg:px-8">
+              
+              {/* Container da Logo */}
+              <div className="logo">
+                <img src="/gemini-svg.png" alt="Logo Expedita" />
+              </div>
 
-      {/* Agrupamento dos textos em coluna */}
-      <div className="flex flex-col leading-none">
-        <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
-        <p className="text-xs text-muted-foreground">Painel do supervisor</p>
-      </div>
+              {/* Textos em coluna (Painel do supervisor embaixo de Expedita) */}
+              <div className="flex flex-col leading-none">
+                <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
+                <p className="text-xs text-muted-foreground">Painel do supervisor</p>
+              </div>
 
-    </div>
-  </header>
-</div>
+            </div>
+          </header>
 
-        <main className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-          <MetricCards />
-          <ExpeditionTable />
-          <ProductsTable />
-        </main>
-      </div>
+          <main className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+            <MetricCards />
+            <ExpeditionTable />
+            <ProductsTable />
+          </main>
+        </div>
       </ChatProvider>
     </InventoryProvider>
   )
