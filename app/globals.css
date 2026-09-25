@@ -93,8 +93,8 @@
 .logo img {
   position: absolute;
   /* Largura e altura maiores que vazam o container sem alterar a altura do header */
-  width: 75px;
-  height: 75px;
+  width: 120px;
+  height: 120px;
   max-width: none !important; /* Desativa limitações do Tailwind */
   object-fit: contain;
 }
