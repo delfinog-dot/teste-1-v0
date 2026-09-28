@@ -102,6 +102,24 @@
   right: 150px; /* Ajuste conforme necessário para centralizar a imagem */
 }
 
+.logout {
+  display: flex;
+  justify-content: flex-end; /* Alinha o botão à direita */
+  margin-top: 1rem; /* Espaçamento superior */
+}
+
+.newexpedition {
+  display: flex;
+  justify-content: flex-end; /* Alinha o botão à direita */
+  margin-top: 1rem; /* Espaçamento superior */
+}
+
+.dark .newexpedition {
+  display: flex;
+  justify-content: flex-end; /* Alinha o botão à direita */
+  margin-top: 1rem; /* Espaçamento superior */
+}
+
 .dark {
   color-scheme: dark;
   --background: oklch(0.145 0 0);

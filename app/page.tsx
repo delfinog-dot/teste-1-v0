@@ -16,19 +16,27 @@ export default function Page() {
               <div className="logo">
                 <img src="/gemini-svg.png" alt="Logo Expedita" />
               </div>
-
               {/* Textos em coluna (Painel do supervisor embaixo de Expedita) */}
               <div className="flex flex-col leading-none">
                 <h1 className="text-lg font-semibold leading-tight">Expedita</h1>
                 <p className="text-xs text-muted-foreground">Painel do supervisor</p>
               </div>
-
+                 <div className="logout">
+                    <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4">
+                      Sair
+                    </button>
+                 </div>
             </div>
           </header>
 
           <main className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
             <MetricCards />
             <ExpeditionTable />
+             <div className="newexpedition">
+                    <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4">
+                      Nova Expedição
+                    </button>
+                  </div>
             <ProductsTable />
           </main>
         </div>
