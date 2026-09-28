@@ -97,8 +97,8 @@
   object-fit: contain;
   position: absolute;
   left: 200px; /* Ajuste conforme necessário para centralizar a imagem */
-  bottom: 25px; /* Alinha a parte inferior da imagem com a parte inferior do container */
-  right: 250px; /* Ajuste conforme necessário para centralizar a imagem */
+  bottom: 20px; /* Alinha a parte inferior da imagem com a parte inferior do container */
+  right: 150px; /* Ajuste conforme necessário para centralizar a imagem */
 }
 
 .dark {
