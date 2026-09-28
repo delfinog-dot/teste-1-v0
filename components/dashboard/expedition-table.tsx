@@ -1,207 +1,211 @@
 "use client"
 
-import { AlertTriangle, MessageCircle, Truck } from "lucide-react"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { estaAtrasado, horasDeAtraso } from "@/lib/expedition-status"
-import { STATUS_LABEL, type Carregamento } from "@/lib/types"
-import { ChatModal } from "@/components/chat/chat-modal"
-import { useChat } from "@/components/chat/chat-provider"
-import { DelayBadge } from "./delay-badge"
-import { useInventory } from "./inventory-provider"
-import { StatusBadge } from "./status-badge"
+import { useState } from "react"
+import { Truck } from "lucide-react"
 
-function formatarDataHora(iso: string) {
-  return new Date(iso).toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  })
-}
-
-function AcoesStatus({
-  carregamento,
-  onAbrirChat,
-}: {
-  carregamento: Carregamento
-  onAbrirChat: (c: Carregamento) => void
-}) {
-  const { avancarStatus, retrocederStatus } = useInventory()
-  const { totalPorPedido } = useChat()
-  const { id, status } = carregamento
-  const totalMensagens = totalPorPedido(id)
-
-  return (
-    <div className="flex flex-wrap justify-end gap-2">
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() => onAbrirChat(carregamento)}
-        aria-label={`Abrir chat do carregamento ${carregamento.codigo}`}
-      >
-        <MessageCircle className="size-4" />
-        Chat
-        {totalMensagens > 0 ? (
-          <span className="ml-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground tabular-nums">
-            {totalMensagens}
-          </span>
-        ) : null}
-      </Button>
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={() => retrocederStatus(id)}
-        disabled={status === "pendente"}
-        aria-label={`Retroceder status do carregamento ${carregamento.codigo}`}
-      >
-        Voltar
-      </Button>
-      <Button
-        size="sm"
-        onClick={() => avancarStatus(id)}
-        disabled={status === "expedido"}
-        aria-label={`Avançar status do carregamento ${carregamento.codigo}`}
-      >
-        {status === "pendente" ? "Iniciar" : "Expedir"}
-      </Button>
-    </div>
-  )
+// Exemplo da estrutura de dados de uma expedição
+interface Expedition {
+  id: string
+  code: string
+  client: string
+  carrier: string
+  items: number
+  eta: string
+  status: "Pendente" | "Em andamento" | "Expedido"
+  isDelayed?: boolean
 }
 
 export function ExpeditionTable() {
-  const { carregamentos } = useInventory()
-  const [chatDe, setChatDe] = useState<Carregamento | null>(null)
+  // 1. Estado para controlar se o Modal está aberto
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Calcula o "agora" apenas no cliente para evitar divergência de hidratação,
-  // e reavalia periodicamente para que o alerta de atraso fique atualizado.
-  const [agora, setAgora] = useState<Date | null>(null)
-  useEffect(() => {
-    setAgora(new Date())
-    const intervalo = setInterval(() => setAgora(new Date()), 60_000)
-    return () => clearInterval(intervalo)
-  }, [])
+  // 2. Estado com a lista de expedições
+  const [expeditions, setExpeditions] = useState<Expedition[]>([
+    {
+      id: "1",
+      code: "EXP-2026-0148",
+      client: "Tech Distribuidora LTDA",
+      carrier: "Rodo Expresso",
+      items: 24,
+      eta: "23/09, 03:00",
+      status: "Pendente",
+      isDelayed: true,
+    },
+    {
+      id: "2",
+      code: "EXP-2026-0149",
+      client: "Mercado Central",
+      carrier: "Log Brasil",
+      items: 112,
+      eta: "24/09, 09:00",
+      status: "Em andamento",
+    },
+  ])
 
-  const atrasados = agora ? carregamentos.filter((c) => estaAtrasado(c, agora)) : []
+  // 3. Estado do formulário
+  const [formData, setFormData] = useState({
+    client: "",
+    carrier: "",
+    items: "",
+    eta: "",
+  })
+
+  // Função para cadastrar a nova expedição
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!formData.client || !formData.carrier || !formData.items) return
+
+    const newExpedition: Expedition = {
+      id: String(Date.now()),
+      code: `EXP-2026-0${Math.floor(100 + Math.random() * 900)}`, // Gera um código dinâmico
+      client: formData.client,
+      carrier: formData.carrier,
+      items: Number(formData.items),
+      eta: formData.eta || "A definir",
+      status: "Pendente",
+    }
+
+    // Adiciona o novo item no início da lista
+    setExpeditions([newExpedition, ...expeditions])
+
+    // Limpa o formulário e fecha o modal
+    setFormData({ client: "", carrier: "", items: "", eta: "" })
+    setIsModalOpen(false)
+  }
 
   return (
-    <section aria-label="Controle de expedição" className="rounded-xl border border-border bg-card shadow-sm">
-      <header className="flex items-center gap-2 border-b border-border px-5 py-4">
-        <Truck className="size-4 text-muted-foreground" />
-        <h2 className="text-sm font-semibold">Controle de expedição</h2>
-        <span className="ml-auto text-xs text-muted-foreground">{carregamentos.length} carregamentos</span>
-      </header>
-
-      {atrasados.length > 0 ? (
-        <div
-          role="alert"
-          className="flex items-start gap-3 border-b border-red-200 bg-red-50 px-5 py-3 text-sm text-red-800"
-        >
-          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-red-600" aria-hidden />
-          <p>
-            <span className="font-semibold">
-              {atrasados.length} {atrasados.length === 1 ? "carregamento atrasado" : "carregamentos atrasados"}
-            </span>{" "}
-            — não iniciados até o horário previsto:{" "}
-            {atrasados.map((c) => c.codigo).join(", ")}.
-          </p>
+    <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
+      {/* Cabeçalho do Card */}
+      <div className="flex items-center justify-between p-6">
+        <div className="flex items-center gap-2">
+          <Truck className="h-5 w-5 text-muted-foreground" />
+          <h2 className="text-lg font-semibold">Controle de expedição</h2>
         </div>
-      ) : null}
 
-      {/* Tabela em telas médias/grandes */}
-      <div className="hidden overflow-x-auto md:block">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-              <th className="px-5 py-3 font-medium">Código</th>
-              <th className="px-5 py-3 font-medium">Cliente</th>
-              <th className="px-5 py-3 font-medium">Transportadora</th>
-              <th className="px-5 py-3 font-medium">Itens</th>
-              <th className="px-5 py-3 font-medium">Previsão</th>
-              <th className="px-5 py-3 font-medium">Status</th>
-              <th className="px-5 py-3 text-right font-medium">Ações</th>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted-foreground">
+            {expeditions.length} carregamentos
+          </span>
+          
+          {/* Botão para ABRIR o Modal */}
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4 transition-colors"
+          >
+            Nova Expedição
+          </button>
+        </div>
+      </div>
+
+      {/* MODAL / DIALOG DE CADASTRO */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-lg bg-card p-6 shadow-lg border border-border">
+            <h3 className="text-lg font-semibold mb-4">Cadastrar Nova Expedição</h3>
+            
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div>
+                <label className="text-sm font-medium">Cliente</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Mercado Central"
+                  value={formData.client}
+                  onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+                  className="w-full mt-1 p-2 rounded-md border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Transportadora</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Log Brasil"
+                  value={formData.carrier}
+                  onChange={(e) => setFormData({ ...formData, carrier: e.target.value })}
+                  className="w-full mt-1 p-2 rounded-md border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Qtd. Itens</label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="Ex: 50"
+                    value={formData.items}
+                    onChange={(e) => setFormData({ ...formData, items: e.target.value })}
+                    className="w-full mt-1 p-2 rounded-md border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium">Previsão (ETA)</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: 28/09, 14:00"
+                    value={formData.eta}
+                    onChange={(e) => setFormData({ ...formData, eta: e.target.value })}
+                    className="w-full mt-1 p-2 rounded-md border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                </div>
+              </div>
+
+              {/* Botões do Modal */}
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 text-sm rounded-md border hover:bg-accent transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  Salvar Expedição
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* TABELA DE EXPEDIÇÕES */}
+      <div className="relative w-full overflow-auto">
+        <table className="w-full caption-bottom text-sm">
+          <thead className="[&_tr]:border-b">
+            <tr className="border-b transition-colors hover:bg-muted/50 text-left">
+              <th className="h-12 px-4 font-medium text-muted-foreground">CÓDIGO</th>
+              <th className="h-12 px-4 font-medium text-muted-foreground">CLIENTE</th>
+              <th className="h-12 px-4 font-medium text-muted-foreground">TRANSPORTADORA</th>
+              <th className="h-12 px-4 font-medium text-muted-foreground">ITENS</th>
+              <th className="h-12 px-4 font-medium text-muted-foreground">PREVISÃO</th>
+              <th className="h-12 px-4 font-medium text-muted-foreground">STATUS</th>
             </tr>
           </thead>
-          <tbody>
-            {carregamentos.map((c) => {
-              const atrasado = agora ? estaAtrasado(c, agora) : false
-              return (
-                <tr
-                  key={c.id}
-                  className={
-                    atrasado
-                      ? "border-b border-red-200 bg-red-50/70 hover:bg-red-50"
-                      : "border-b border-border/60 last:border-0 hover:bg-muted/40"
-                  }
-                >
-                  <td className="px-5 py-3 font-medium">{c.codigo}</td>
-                  <td className="px-5 py-3">{c.cliente}</td>
-                  <td className="px-5 py-3 text-muted-foreground">{c.transportadora}</td>
-                  <td className="px-5 py-3 tabular-nums">{c.quantidadeItens}</td>
-                  <td
-                    className={`px-5 py-3 tabular-nums ${atrasado ? "font-medium text-red-700" : "text-muted-foreground"}`}
-                  >
-                    {formatarDataHora(c.dataHoraPrevista)}
-                  </td>
-                  <td className="px-5 py-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <StatusBadge status={c.status} />
-                      {atrasado ? <DelayBadge horas={horasDeAtraso(c, agora!)} /> : null}
-                    </div>
-                  </td>
-                  <td className="px-5 py-3">
-                    <AcoesStatus carregamento={c} onAbrirChat={setChatDe} />
-                  </td>
-                </tr>
-              )
-            })}
+          <tbody className="[&_tr:last-child]:border-0">
+            {expeditions.map((item) => (
+              <tr key={item.id} className="border-b transition-colors hover:bg-muted/50">
+                <td className="p-4 font-medium">{item.code}</td>
+                <td className="p-4">{item.client}</td>
+                <td className="p-4 text-muted-foreground">{item.carrier}</td>
+                <td className="p-4">{item.items}</td>
+                <td className="p-4">{item.eta}</td>
+                <td className="p-4">
+                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                    {item.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-
-      {/* Cards em telas pequenas */}
-      <ul className="divide-y divide-border md:hidden">
-        {carregamentos.map((c) => {
-          const atrasado = agora ? estaAtrasado(c, agora) : false
-          return (
-            <li key={c.id} className={`flex flex-col gap-3 p-4 ${atrasado ? "bg-red-50/70" : ""}`}>
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-medium">{c.codigo}</p>
-                  <p className="text-sm text-muted-foreground">{c.cliente}</p>
-                </div>
-                <div className="flex flex-col items-end gap-1.5">
-                  <StatusBadge status={c.status} />
-                  {atrasado ? <DelayBadge horas={horasDeAtraso(c, agora!)} /> : null}
-                </div>
-              </div>
-              <dl className="grid grid-cols-2 gap-2 text-sm">
-                <div>
-                  <dt className="text-xs text-muted-foreground">Transportadora</dt>
-                  <dd>{c.transportadora}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-muted-foreground">Itens</dt>
-                  <dd className="tabular-nums">{c.quantidadeItens}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-muted-foreground">Previsão</dt>
-                  <dd className={`tabular-nums ${atrasado ? "font-medium text-red-700" : ""}`}>
-                    {formatarDataHora(c.dataHoraPrevista)}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-muted-foreground">Situação</dt>
-                  <dd>{STATUS_LABEL[c.status]}</dd>
-                </div>
-              </dl>
-              <AcoesStatus carregamento={c} onAbrirChat={setChatDe} />
-            </li>
-          )
-        })}
-      </ul>
-
-      <ChatModal open={chatDe !== null} onClose={() => setChatDe(null)} carregamento={chatDe} />
-    </section>
+    </div>
   )
 }
