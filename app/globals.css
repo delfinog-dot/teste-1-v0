@@ -96,7 +96,7 @@
   max-height: 50px; /* Garante que a imagem ocupe toda a altura do container sem distorcer */
   object-fit: contain;
   position: absolute;
-  left: 200px; /* Ajuste conforme necessário para centralizar a imagem */
+  left: 350px; /* Ajuste conforme necessário para centralizar a imagem */
   bottom: 0; /* Alinha a parte inferior da imagem com a parte inferior do container */
   right: 250px; /* Ajuste conforme necessário para centralizar a imagem */
 }
