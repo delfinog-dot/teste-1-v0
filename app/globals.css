@@ -98,13 +98,13 @@
   position: absolute;
   left: 300px; /* Ajuste conforme necessário para centralizar a imagem */
   bottom: 25px; /* Alinha a parte inferior da imagem com a parte inferior do container */
-  top: 16px; /* Garante que a imagem ocupe toda a altura do container */
+  top: 20px; /* Garante que a imagem ocupe toda a altura do container */
   right: 150px; /* Ajuste conforme necessário para centralizar a imagem */
 }
 
 .logout {
   display: flex;
-  left: 0;
+  left: 50px;
   right: 0;
   margin-top: 1rem; /* Espaçamento superior */
 }
