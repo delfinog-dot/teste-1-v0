@@ -104,7 +104,7 @@
 
 .logout {
   display: flex;
-  justify-content: flex-end; /* Alinha o botão à direita */
+  justify-content: left; /* Alinha o botão à esquerda */
   margin-top: 1rem; /* Espaçamento superior */
 }
 
@@ -119,6 +119,7 @@
   justify-content: flex-end; /* Alinha o botão à direita */
   margin-top: 1rem; /* Espaçamento superior */
 }
+
 
 .dark {
   color-scheme: dark;
