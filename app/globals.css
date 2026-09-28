@@ -104,7 +104,8 @@
 
 .logout {
   display: flex;
-  justify-content: flex-start; /* Alinha o botão à esquerda */
+  left: 0;
+  right: 0;
   margin-top: 1rem; /* Espaçamento superior */
 }
 
@@ -112,16 +113,7 @@
   display: flex;
   justify-content: flex-end; /* Alinha o botão à direita */
   margin-top: 1rem; /* Espaçamento superior */
-  top: 0;
-  left: 0;
 }
-
-.dark .newexpedition {
-  display: flex;
-  justify-content: flex-end; /* Alinha o botão à direita */
-  margin-top: 1rem; /* Espaçamento superior */
-}
-
 
 .dark {
   color-scheme: dark;
