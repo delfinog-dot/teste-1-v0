@@ -82,22 +82,18 @@
 }
 
 .logo {
-  width: 42px;
-  height: 42px;
   width: auto;
   height: 100%;
-  max-height: 44px; /* Ajusta a altura total da logo para alinhar perfeitamente com a altura do texto */
+  max-height: 50px; /* Ajusta a altura total da logo para alinhar perfeitamente com a altura do texto */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .logo img {
-  width: 60px;
-  height: 60px;
   width: auto;
   height: 100%;
-  max-height: 44px; /* Garante que a imagem ocupe toda a altura do container sem distorcer */
+  max-height: 50px; /* Garante que a imagem ocupe toda a altura do container sem distorcer */
   object-fit: contain;
 }
 
